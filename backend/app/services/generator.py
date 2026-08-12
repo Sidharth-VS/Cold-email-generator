@@ -5,7 +5,7 @@ from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.exceptions import OutputParserException
 from langchain_groq import ChatGroq
 load_dotenv()
-from scrape import *
+from backend.app.services.scrape import *
 
 
 class Generator:

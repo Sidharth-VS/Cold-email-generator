@@ -1,4 +1,5 @@
 from langchain_community.document_loaders import WebBaseLoader
+from bs4 import BeautifulSoup
 import re
 
 def clean_text(text):
