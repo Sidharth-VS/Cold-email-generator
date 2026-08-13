@@ -1,6 +1,6 @@
 """create users, portfolio, and generated_emails tables
 
-Revision ID: 001_create_users_portfolio_and_generated_emails_tables
+Revision ID: 001_create_tables
 Revises: 
 Create Date: 2026-08-13 00:05:00.000000
 
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import UUID
 
 # revision identifiers, used by Alembic.
-revision: str = '001_create_users_portfolio_and_generated_emails_tables'
+revision: str = '001_create_tables'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
