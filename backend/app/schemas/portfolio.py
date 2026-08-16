@@ -9,7 +9,7 @@ class PortfolioBase(BaseModel):
 
 
 class PortfolioCreate(PortfolioBase):
-    user_id: uuid.UUID
+    pass
 
 
 class PortfolioUpdate(BaseModel):

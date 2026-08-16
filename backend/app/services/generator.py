@@ -5,7 +5,7 @@ from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.exceptions import OutputParserException
 from langchain_groq import ChatGroq
 load_dotenv()
-from backend.app.services.scrape import *
+from app.services.scrape import get_webpage_text
 
 
 class Generator:
