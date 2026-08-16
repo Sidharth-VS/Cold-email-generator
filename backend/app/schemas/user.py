@@ -22,6 +22,11 @@ class UserUpdate(BaseModel):
     is_superuser: bool | None = None
 
 
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
+
 class UserResponse(UserBase):
     model_config = ConfigDict(from_attributes=True)
 
