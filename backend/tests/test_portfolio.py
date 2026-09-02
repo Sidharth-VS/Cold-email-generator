@@ -5,13 +5,15 @@ def test_create_portfolio(client):
     register_payload = {
         "email": "portfolio@example.com",
         "username": "portuser",
-        "password": "securepassword123",
+        "password": "SecurePass123!",
     }
-    client.post("/users/register", json=register_payload)
+    reg_response = client.post("/users/register", json=register_payload)
+    otp = reg_response.json()["user"]["otp"]
+    client.post("/auth/verify-email", params={"email": register_payload["email"], "otp": otp})
 
     login_payload = {
         "email": "portfolio@example.com",
-        "password": "securepassword123",
+        "password": "SecurePass123!",
     }
     token = client.post("/users/login", json=login_payload).json()["access_token"]
 
@@ -37,13 +39,15 @@ def test_list_portfolios(client):
     register_payload = {
         "email": "list@example.com",
         "username": "listuser",
-        "password": "securepassword123",
+        "password": "SecurePass123!",
     }
-    client.post("/users/register", json=register_payload)
+    reg_response = client.post("/users/register", json=register_payload)
+    otp = reg_response.json()["user"]["otp"]
+    client.post("/auth/verify-email", params={"email": register_payload["email"], "otp": otp})
 
     login_payload = {
         "email": "list@example.com",
-        "password": "securepassword123",
+        "password": "SecurePass123!",
     }
     token = client.post("/users/login", json=login_payload).json()["access_token"]
 
@@ -64,13 +68,15 @@ def test_get_portfolio_not_found(client):
     register_payload = {
         "email": "notfound@example.com",
         "username": "notfounduser",
-        "password": "securepassword123",
+        "password": "SecurePass123!",
     }
-    client.post("/users/register", json=register_payload)
+    reg_response = client.post("/users/register", json=register_payload)
+    otp = reg_response.json()["user"]["otp"]
+    client.post("/auth/verify-email", params={"email": register_payload["email"], "otp": otp})
 
     login_payload = {
         "email": "notfound@example.com",
-        "password": "securepassword123",
+        "password": "SecurePass123!",
     }
     token = client.post("/users/login", json=login_payload).json()["access_token"]
 
@@ -82,13 +88,15 @@ def test_update_portfolio(client):
     register_payload = {
         "email": "update@example.com",
         "username": "updateuser",
-        "password": "securepassword123",
+        "password": "SecurePass123!",
     }
-    client.post("/users/register", json=register_payload)
+    reg_response = client.post("/users/register", json=register_payload)
+    otp = reg_response.json()["user"]["otp"]
+    client.post("/auth/verify-email", params={"email": register_payload["email"], "otp": otp})
 
     login_payload = {
         "email": "update@example.com",
-        "password": "securepassword123",
+        "password": "SecurePass123!",
     }
     token = client.post("/users/login", json=login_payload).json()["access_token"]
 
@@ -114,13 +122,15 @@ def test_delete_portfolio(client):
     register_payload = {
         "email": "delete@example.com",
         "username": "deleteuser",
-        "password": "securepassword123",
+        "password": "SecurePass123!",
     }
-    client.post("/users/register", json=register_payload)
+    reg_response = client.post("/users/register", json=register_payload)
+    otp = reg_response.json()["user"]["otp"]
+    client.post("/auth/verify-email", params={"email": register_payload["email"], "otp": otp})
 
     login_payload = {
         "email": "delete@example.com",
-        "password": "securepassword123",
+        "password": "SecurePass123!",
     }
     token = client.post("/users/login", json=login_payload).json()["access_token"]
 

@@ -6,13 +6,15 @@ def test_generate_email(client):
     register_payload = {
         "email": "email@example.com",
         "username": "emailuser",
-        "password": "securepassword123",
+        "password": "SecurePass123!",
     }
-    client.post("/users/register", json=register_payload)
+    reg_response = client.post("/users/register", json=register_payload)
+    otp = reg_response.json()["user"]["otp"]
+    client.post("/auth/verify-email", params={"email": register_payload["email"], "otp": otp})
 
     login_payload = {
         "email": "email@example.com",
-        "password": "securepassword123",
+        "password": "SecurePass123!",
     }
     token = client.post("/users/login", json=login_payload).json()["access_token"]
 
@@ -54,13 +56,15 @@ def test_list_emails(client):
     register_payload = {
         "email": "listemails@example.com",
         "username": "listemailsuser",
-        "password": "securepassword123",
+        "password": "SecurePass123!",
     }
-    client.post("/users/register", json=register_payload)
+    reg_response = client.post("/users/register", json=register_payload)
+    otp = reg_response.json()["user"]["otp"]
+    client.post("/auth/verify-email", params={"email": register_payload["email"], "otp": otp})
 
     login_payload = {
         "email": "listemails@example.com",
-        "password": "securepassword123",
+        "password": "SecurePass123!",
     }
     token = client.post("/users/login", json=login_payload).json()["access_token"]
 
@@ -103,13 +107,15 @@ def test_get_email(client):
     register_payload = {
         "email": "getemail@example.com",
         "username": "getemailuser",
-        "password": "securepassword123",
+        "password": "SecurePass123!",
     }
-    client.post("/users/register", json=register_payload)
+    reg_response = client.post("/users/register", json=register_payload)
+    otp = reg_response.json()["user"]["otp"]
+    client.post("/auth/verify-email", params={"email": register_payload["email"], "otp": otp})
 
     login_payload = {
         "email": "getemail@example.com",
-        "password": "securepassword123",
+        "password": "SecurePass123!",
     }
     token = client.post("/users/login", json=login_payload).json()["access_token"]
 
@@ -154,13 +160,15 @@ def test_delete_email(client):
     register_payload = {
         "email": "delete@example.com",
         "username": "deleteuser",
-        "password": "securepassword123",
+        "password": "SecurePass123!",
     }
-    client.post("/users/register", json=register_payload)
+    reg_response = client.post("/users/register", json=register_payload)
+    otp = reg_response.json()["user"]["otp"]
+    client.post("/auth/verify-email", params={"email": register_payload["email"], "otp": otp})
 
     login_payload = {
         "email": "delete@example.com",
-        "password": "securepassword123",
+        "password": "SecurePass123!",
     }
     token = client.post("/users/login", json=login_payload).json()["access_token"]
 

@@ -19,10 +19,9 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.execute('CREATE EXTENSION IF NOT EXISTS "pgcrypto"')
     op.create_table(
         'users',
-        sa.Column('id', UUID(as_uuid=True), primary_key=True, server_default=sa.text('gen_random_uuid()')),
+        sa.Column('id', UUID(as_uuid=True), primary_key=True),
         sa.Column('email', sa.String(255), nullable=False, unique=True, index=True),
         sa.Column('username', sa.String(255), nullable=False),
         sa.Column('hashed_password', sa.String(255), nullable=False),
@@ -34,16 +33,17 @@ def upgrade() -> None:
 
     op.create_table(
         'portfolio',
-        sa.Column('id', UUID(as_uuid=True), primary_key=True, server_default=sa.text('gen_random_uuid()')),
+        sa.Column('id', UUID(as_uuid=True), primary_key=True),
         sa.Column('user_id', UUID(as_uuid=True), sa.ForeignKey('users.id', ondelete='CASCADE'), nullable=False),
         sa.Column('tech_stack', sa.String(255), nullable=False),
         sa.Column('link', sa.String(255), nullable=False),
+        sa.Column('chromadb_ids', sa.JSON(), nullable=True),
         sa.Column('created_at', sa.DateTime(), nullable=False, server_default=sa.text('now()')),
     )
 
     op.create_table(
         'generated_emails',
-        sa.Column('id', UUID(as_uuid=True), primary_key=True, server_default=sa.text('gen_random_uuid()')),
+        sa.Column('id', UUID(as_uuid=True), primary_key=True),
         sa.Column('user_id', UUID(as_uuid=True), sa.ForeignKey('users.id', ondelete='CASCADE'), nullable=False),
         sa.Column('job_url', sa.String(255), nullable=True),
         sa.Column('job_description', sa.Text(), nullable=True),
