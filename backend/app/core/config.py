@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "postgresql://user:pass@localhost:5432/app"
     GROQ_API_KEY: str = ""
     SECRET_KEY: str = "your-secret-key-here"
-    CORS_ORIGINS: list[str] = ["http://localhost:3000", "http://localhost:5173"]
+    CORS_ORIGINS: list[str] = ["http://localhost:3000", "http://localhost:5173", "http://localhost:4173", "http://localhost:5174"]
 
     SMTP_HOST: str = ""
     SMTP_PORT: int = 587
