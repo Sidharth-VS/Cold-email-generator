@@ -1,3 +1,5 @@
-app/vectorstore
+vectorstore
 .env
 .gitignore
+.venv
+node_modules
