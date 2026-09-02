@@ -8,9 +8,7 @@ def test_generate_email(client):
         "username": "emailuser",
         "password": "SecurePass123!",
     }
-    reg_response = client.post("/users/register", json=register_payload)
-    otp = reg_response.json()["user"]["otp"]
-    client.post("/auth/verify-email", params={"email": register_payload["email"], "otp": otp})
+    client.post("/users/register", json=register_payload)
 
     login_payload = {
         "email": "email@example.com",
@@ -58,9 +56,7 @@ def test_list_emails(client):
         "username": "listemailsuser",
         "password": "SecurePass123!",
     }
-    reg_response = client.post("/users/register", json=register_payload)
-    otp = reg_response.json()["user"]["otp"]
-    client.post("/auth/verify-email", params={"email": register_payload["email"], "otp": otp})
+    client.post("/users/register", json=register_payload)
 
     login_payload = {
         "email": "listemails@example.com",
@@ -109,9 +105,7 @@ def test_get_email(client):
         "username": "getemailuser",
         "password": "SecurePass123!",
     }
-    reg_response = client.post("/users/register", json=register_payload)
-    otp = reg_response.json()["user"]["otp"]
-    client.post("/auth/verify-email", params={"email": register_payload["email"], "otp": otp})
+    client.post("/users/register", json=register_payload)
 
     login_payload = {
         "email": "getemail@example.com",
@@ -162,9 +156,7 @@ def test_delete_email(client):
         "username": "deleteuser",
         "password": "SecurePass123!",
     }
-    reg_response = client.post("/users/register", json=register_payload)
-    otp = reg_response.json()["user"]["otp"]
-    client.post("/auth/verify-email", params={"email": register_payload["email"], "otp": otp})
+    client.post("/users/register", json=register_payload)
 
     login_payload = {
         "email": "delete@example.com",

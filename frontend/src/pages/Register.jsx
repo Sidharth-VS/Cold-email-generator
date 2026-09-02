@@ -16,8 +16,8 @@ export default function Register() {
     setError('')
     setLoading(true)
     try {
-      const { data } = await api.post('/users/register', { email, username, password })
-      navigate(`/verify-email?email=${encodeURIComponent(email)}`)
+      await api.post('/users/register', { email, username, password })
+      navigate('/login')
     } catch (err) {
       const detail = err?.response?.data?.detail
       setError(Array.isArray(detail) ? detail.map(d => d.msg || d).join(', ') : (detail || 'Registration failed'))

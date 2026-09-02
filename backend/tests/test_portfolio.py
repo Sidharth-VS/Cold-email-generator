@@ -7,9 +7,7 @@ def test_create_portfolio(client):
         "username": "portuser",
         "password": "SecurePass123!",
     }
-    reg_response = client.post("/users/register", json=register_payload)
-    otp = reg_response.json()["user"]["otp"]
-    client.post("/auth/verify-email", params={"email": register_payload["email"], "otp": otp})
+    client.post("/users/register", json=register_payload)
 
     login_payload = {
         "email": "portfolio@example.com",
@@ -41,9 +39,7 @@ def test_list_portfolios(client):
         "username": "listuser",
         "password": "SecurePass123!",
     }
-    reg_response = client.post("/users/register", json=register_payload)
-    otp = reg_response.json()["user"]["otp"]
-    client.post("/auth/verify-email", params={"email": register_payload["email"], "otp": otp})
+    client.post("/users/register", json=register_payload)
 
     login_payload = {
         "email": "list@example.com",
@@ -70,9 +66,7 @@ def test_get_portfolio_not_found(client):
         "username": "notfounduser",
         "password": "SecurePass123!",
     }
-    reg_response = client.post("/users/register", json=register_payload)
-    otp = reg_response.json()["user"]["otp"]
-    client.post("/auth/verify-email", params={"email": register_payload["email"], "otp": otp})
+    client.post("/users/register", json=register_payload)
 
     login_payload = {
         "email": "notfound@example.com",
@@ -90,9 +84,7 @@ def test_update_portfolio(client):
         "username": "updateuser",
         "password": "SecurePass123!",
     }
-    reg_response = client.post("/users/register", json=register_payload)
-    otp = reg_response.json()["user"]["otp"]
-    client.post("/auth/verify-email", params={"email": register_payload["email"], "otp": otp})
+    client.post("/users/register", json=register_payload)
 
     login_payload = {
         "email": "update@example.com",
@@ -124,9 +116,7 @@ def test_delete_portfolio(client):
         "username": "deleteuser",
         "password": "SecurePass123!",
     }
-    reg_response = client.post("/users/register", json=register_payload)
-    otp = reg_response.json()["user"]["otp"]
-    client.post("/auth/verify-email", params={"email": register_payload["email"], "otp": otp})
+    client.post("/users/register", json=register_payload)
 
     login_payload = {
         "email": "delete@example.com",

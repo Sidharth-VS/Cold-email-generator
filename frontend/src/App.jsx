@@ -3,7 +3,6 @@ import useAuth from './hooks/useAuth'
 import useTheme from './hooks/useTheme'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import VerifyEmail from './pages/VerifyEmail'
 import Portfolio from './pages/Portfolio'
 import GenerateEmail from './pages/GenerateEmail'
 import Emails from './pages/Emails'
@@ -53,7 +52,6 @@ function App() {
         <Routes>
           <Route path="/login" element={token ? <Navigate to="/portfolio" /> : <Login />} />
           <Route path="/register" element={token ? <Navigate to="/portfolio" /> : <Register />} />
-          <Route path="/verify-email" element={<VerifyEmail />} />
           <Route path="/portfolio" element={<ProtectedRoute><Portfolio /></ProtectedRoute>} />
           <Route path="/generate" element={<ProtectedRoute><GenerateEmail /></ProtectedRoute>} />
           <Route path="/emails" element={<ProtectedRoute><Emails /></ProtectedRoute>} />

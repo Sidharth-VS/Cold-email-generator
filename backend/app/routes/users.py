@@ -23,37 +23,18 @@ def register(user_in: UserCreate, db: Session = Depends(get_db)):
     if existing:
         raise HTTPException(status_code=400, detail="Email already registered")
 
-    otp = generate_otp()
     user = User(
         email=user_in.email,
         username=user_in.username,
         hashed_password=hash_password(user_in.password),
-        email_verified=False,
-        otp=otp,
-        otp_expires_at=datetime.utcnow() + timedelta(minutes=10),
+        email_verified=True,
+        otp=None,
+        otp_expires_at=None,
     )
     db.add(user)
     db.commit()
     db.refresh(user)
-
-    try:
-        html = f"""
-        <html>
-          <body>
-            <h2>Verify your email</h2>
-            <p>Your OTP is: <strong>{otp}</strong></p>
-            <p>This OTP will expire in 10 minutes.</p>
-          </body>
-        </html>
-        """
-        send_email(user.email, "Verify your email", html)
-    except Exception as e:
-        logger.warning(f"Failed to send verification email to {user.email}: {e}")
-
-    return {
-        "user": UserResponse.model_validate(user),
-        "message": "Registration successful. Please verify your email with the OTP sent to your inbox.",
-    }
+    return UserResponse.model_validate(user)
 
 
 @router.post("/login")
@@ -61,9 +42,6 @@ def login(credentials: UserLogin, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == credentials.email).first()
     if not user or not verify_password(credentials.password, user.hashed_password):
         raise HTTPException(status_code=401, detail="Invalid email or password")
-
-    if not user.email_verified:
-        raise HTTPException(status_code=403, detail="Email not verified. Please verify your email before logging in.")
 
     access_token = create_access_token(data={"sub": str(user.id)})
     return {"access_token": access_token, "token_type": "bearer"}
