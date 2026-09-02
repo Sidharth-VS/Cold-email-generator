@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000'
-const baseURL = backendUrl
+const backendUrl = import.meta.env.VITE_BACKEND_URL || ''
+const baseURL = backendUrl || '/'
 
 const api = axios.create({
   baseURL,
