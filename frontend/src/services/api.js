@@ -1,7 +1,10 @@
 import axios from 'axios'
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL
+const baseURL = import.meta.env.DEV ? '/api' : (backendUrl ? `${backendUrl}/api` : '/api')
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL,
 })
 
 api.interceptors.request.use((config) => {
