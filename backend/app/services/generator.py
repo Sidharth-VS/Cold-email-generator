@@ -10,7 +10,7 @@ from app.services.scrape import get_webpage_text
 
 class Generator:
     def __init__(self):
-        self.llm = ChatGroq(temperature=0, api_key=os.getenv("GROQ_API_KEY"), model_name="llama-3.1-8b-instant")
+        self.llm = ChatGroq(temperature=0, api_key=os.getenv("GROQ_API_KEY"), model_name="openai/gpt-oss-120b")
 
     def extract_job_details(self, url):
         content = get_webpage_text(url)

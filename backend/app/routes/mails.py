@@ -1,6 +1,7 @@
 from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+import uuid
 
 from app.core.deps import get_db
 from app.models.mails import GeneratedEmail
@@ -8,6 +9,7 @@ from app.schemas.mails import GeneratedEmailCreate, GeneratedEmailResponse
 from app.routes.auth import get_current_user_from_token
 from app.services.generator import Generator
 from app.services.scrape import get_webpage_text
+from app.services.portfolio import Portfolio as PortfolioService
 
 router = APIRouter()
 
@@ -15,6 +17,8 @@ router = APIRouter()
 @router.post("/generate", response_model=GeneratedEmailResponse, status_code=status.HTTP_201_CREATED)
 def generate_email(
     job_url: str,
+    role: str | None = None,
+    organisation: str | None = None,
     current_user=Depends(get_current_user_from_token),
     db: Session = Depends(get_db),
 ):
@@ -23,21 +27,23 @@ def generate_email(
     generator = Generator()
     job_details = generator.extract_job_details(job_url)
 
-    portfolio_service = __import__("app.services.portfolio", fromlist=["Portfolio"]).Portfolio()
+    portfolio_service = PortfolioService()
 
     skills = []
     for job in job_details:
         skills.extend(job.get("skills", []))
 
-    links = portfolio_service.query(skills)
+    links = portfolio_service.query(skills, current_user.id)
 
     link_list = [link.get("links") for link in links[0]] if links else []
 
-    role = job_details[0].get("role", "")
-    experience = job_details[0].get("experience", "")
-    description = job_details[0].get("description", "")
+    role = role or "Developer"
+    organisation = organisation or "Organisation"
+    name = current_user.username
 
-    email_text = generator.generate_mail(description, current_user.username, "Developer", "Organisation", link_list)
+    description = job_details[0].get("description", "") if job_details else ""
+
+    email_text = generator.generate_mail(description, name, role, organisation, link_list)
 
     email = GeneratedEmail(
         user_id=current_user.id,
@@ -64,7 +70,24 @@ def list_emails(
 
 @router.get("/{email_id}", response_model=GeneratedEmailResponse)
 def get_email(email_id: str, current_user=Depends(get_current_user_from_token), db: Session = Depends(get_db)):
-    email = db.query(GeneratedEmail).filter(GeneratedEmail.id == email_id, GeneratedEmail.user_id == current_user.id).first()
+    try:
+        eid = uuid.UUID(email_id)
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Email not found")
+    email = db.query(GeneratedEmail).filter(GeneratedEmail.id == eid, GeneratedEmail.user_id == current_user.id).first()
     if not email:
         raise HTTPException(status_code=404, detail="Email not found")
     return email
+
+
+@router.delete("/{email_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_email(email_id: str, current_user=Depends(get_current_user_from_token), db: Session = Depends(get_db)):
+    try:
+        eid = uuid.UUID(email_id)
+    except ValueError:
+        raise HTTPException(status_code=404, detail="Email not found")
+    email = db.query(GeneratedEmail).filter(GeneratedEmail.id == eid, GeneratedEmail.user_id == current_user.id).first()
+    if not email:
+        raise HTTPException(status_code=404, detail="Email not found")
+    db.delete(email)
+    db.commit()

@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from jose import JWTError, jwt
+import uuid
 
 from app.core.deps import get_db
 from app.core.security import decode_access_token
@@ -28,7 +29,7 @@ def get_current_user_from_token(
     user_id: str = payload.get("sub")
     if user_id is None:
         raise credentials_exception
-    user = db.query(User).filter(User.id == user_id).first()
+    user = db.query(User).filter(User.id == uuid.UUID(user_id)).first()
     if user is None:
         raise credentials_exception
     return user

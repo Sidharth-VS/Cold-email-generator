@@ -11,13 +11,13 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
-    hashed_password: str
+    password: str
 
 
 class UserUpdate(BaseModel):
     email: str | None = None
     username: str | None = None
-    hashed_password: str | None = None
+    password: str | None = None
     is_active: bool | None = None
     is_superuser: bool | None = None
 

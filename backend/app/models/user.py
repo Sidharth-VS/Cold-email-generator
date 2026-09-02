@@ -2,6 +2,7 @@ from datetime import datetime
 from sqlalchemy import String, DateTime, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import event
 import uuid
 
 from .base import Base
@@ -18,3 +19,8 @@ class User(Base):
     is_superuser: Mapped[bool] = mapped_column(default=False, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, nullable=False)
+
+
+@event.listens_for(User, "before_update")
+def receive_before_update(mapper, connection, target):
+    target.updated_at = datetime.utcnow()
